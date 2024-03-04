@@ -6,7 +6,7 @@ import tooling1
 # Initialize OpenAI client
 client = OpenAI()
 
-st.header("Convert Audio to Text")
+st.header("Convert Audio to Text. You can record the conversation or upload the saved one")
 
 # Option for users to either upload a file or record directly
 option = st.radio("Choose an option:", ('Upload Audio File', 'Record Audio'))
