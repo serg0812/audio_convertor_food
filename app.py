@@ -29,10 +29,8 @@ if option == 'Upload Audio File':
         text_output = convert_voice_to_text(audio_file)  # Convert audio file to text
         st.session_state['text_output'] = text_output  # Store text output in session state for later use
 
-        processed_output = tooling1.process_text_from_streamlit(st.session_state['text_output'])
-
-        # Display the processed output in Streamlit
-        st.text_area("Processed Output", value=processed_output, height=300)
+        # Display the text output in Streamlit
+        st.text_area("Processed Output", value=text_output, height=300)
 
 elif option == 'Record Audio':
     st.write("Record your voice, and play the recorded audio:")
@@ -47,17 +45,15 @@ elif option == 'Record Audio':
             with open("recorded_audio.wav", "rb") as f:
                 text_output = convert_voice_to_text(f)  # Convert recorded audio file to text
                 st.session_state['text_output'] = text_output  # Store text output in session state for later use
-
-                processed_output = tooling1.process_text_from_streamlit(st.session_state['text_output'])
                 
-                # Display the processed output in Streamlit
-                st.text_area("Processed Output", value=processed_output, height=300)
+                # Display the text output in Streamlit
+                st.text_area("Processed Output", value=text_output, height=300)
 
 # Additional functionality (translation and text-to-speech conversion) remains the same
 if 'text_output' in st.session_state and st.session_state['text_output']:
-    language_input = st.text_input("Enter the language you would like to translate it to:", "")
+    language_input = st.text_input("Now you can translate it. Enter the language you would like to translate it to:", "")
 
-    if language_input and st.button('Translate further'):
+    if language_input and st.button('Translate further to text and audio'):
         response = client.chat.completions.create(
             model="gpt-4-0125-preview",
             messages=[
