@@ -16,12 +16,12 @@ from langchain.tools.render import format_tool_to_openai_function
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from langchain.tools import StructuredTool
 
-class FoodDetails(BaseModel):
+class PatientDetails(BaseModel):
     """
     Pydantic arguments schema for food details
     """
-    food: str = Field(..., description="item from the menu person would like to order e.g. chicken wings")
-    qty: str = Field(..., description="how many of items person would like to order")
+    name: str = Field(..., description="Name of the patient, e.g. John Smith")
+    dob: str = Field(..., description="date of birth of the paitent")
 
 class DrinkDetails(BaseModel):
     """

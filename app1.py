@@ -1,15 +1,15 @@
 import streamlit as st
 from openai import OpenAI
 from streamlit_mic_recorder import mic_recorder, speech_to_text
-#import tooling1
+import tooling1
 
 # Initialize OpenAI client
 client = OpenAI()
 
-st.header("Convert Audio to Text. You can record the conversation or upload the saved one")
+st.header("Convert Text or Voice to Audio. You can put your text and convert it to any language")
 
 # Option for users to either upload a file or record directly
-option = st.radio("Choose an option:", ('Upload Audio File', 'Record Audio'))
+option = st.radio("Choose an option:", ('Insert your text', 'Record Audio'))
 
 if 'text_output' not in st.session_state:
     st.session_state['text_output'] = ''
@@ -19,21 +19,16 @@ def convert_voice_to_text(audio_file):
     transcript = client.audio.translations.create(
         model="whisper-1", 
         file=audio_file,
-#        srt response for timestamps 
-#        response_format="srt"
-# text response for raw text output
-        response = "text"
+        response_format="text"
     )
     return transcript
 
-if option == 'Upload Audio File':
-    audio_file = st.file_uploader("Upload an audio file", type=['m4a', 'wav', 'mp3', 'mp4'])
-    if audio_file and st.button('Convert Audio to Text'):
-        text_output = convert_voice_to_text(audio_file)  # Convert audio file to text
-        st.session_state['text_output'] = text_output  # Store text output in session state for later use
+if option == 'Insert your text':
+    text_output = st.chat_input("")
+    st.session_state['text_output'] = text_output  # Store text output in session state for later use
 
-        # Display the text output in Streamlit
-        st.text_area("Processed Output", value=text_output, height=300)
+    # Display the text output in Streamlit
+    st.text_area("Processed Output", value=text_output, height=300)
 
 elif option == 'Record Audio':
     st.write("Record your voice, and play the recorded audio:")
@@ -48,7 +43,6 @@ elif option == 'Record Audio':
             with open("recorded_audio.wav", "rb") as f:
                 text_output = convert_voice_to_text(f)  # Convert recorded audio file to text
                 st.session_state['text_output'] = text_output  # Store text output in session state for later use
-                
                 # Display the text output in Streamlit
                 st.text_area("Processed Output", value=text_output, height=300)
 
@@ -58,7 +52,7 @@ if 'text_output' in st.session_state and st.session_state['text_output']:
 
     if language_input and st.button('Translate further to text and audio'):
         response = client.chat.completions.create(
-            model="gpt-4-0125-preview",
+            model="gpt-4-turbo",
             messages=[
                 {"role": "system", "content": "You are a universal translator."},
                 {"role": "user", "content": f"Translate into {language_input}: {st.session_state['text_output']}"}
