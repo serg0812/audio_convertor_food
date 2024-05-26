@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 from streamlit_mic_recorder import mic_recorder, speech_to_text
-import tooling1
+#import tooling1
 
 # Initialize OpenAI client
 client = OpenAI()
@@ -52,7 +52,7 @@ if 'text_output' in st.session_state and st.session_state['text_output']:
 
     if language_input and st.button('Translate further to text and audio'):
         response = client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a universal translator."},
                 {"role": "user", "content": f"Translate into {language_input}: {st.session_state['text_output']}"}

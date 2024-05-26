@@ -19,7 +19,6 @@ def convert_voice_to_text(audio_file):
     transcript = client.audio.translations.create(
         model="whisper-1", 
         file=audio_file,
-        response_format="text"
     )
     return transcript
 
@@ -52,7 +51,7 @@ if 'text_output' in st.session_state and st.session_state['text_output']:
 
     if language_input and st.button('Translate further to text and audio'):
         response = client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a universal translator."},
                 {"role": "user", "content": f"Translate into {language_input}: {st.session_state['text_output']}"}
